@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace BitWasp\Bitcoin\Transaction\Mutator;
 
@@ -8,7 +8,6 @@ use BitWasp\Bitcoin\Script\ScriptWitnessInterface;
 
 class WitnessCollectionMutator extends AbstractCollectionMutator
 {
-
     /**
      * @param ScriptWitnessInterface[] $inputs
      */
@@ -24,20 +23,11 @@ class WitnessCollectionMutator extends AbstractCollectionMutator
     }
 
     /**
-     * @return InputMutator
-     */
-    public function current()
-    {
-        return $this->set->current();
-    }
-
-    /**
      * @param int $offset
-     * @return InputMutator
      */
     public function offsetGet($offset): InputMutator
     {
-        if (!$this->set->offsetExists($offset)) {
+        if (! $this->set->offsetExists($offset)) {
             throw new \OutOfRangeException('Input does not exist');
         }
 
@@ -58,8 +48,6 @@ class WitnessCollectionMutator extends AbstractCollectionMutator
     }
 
     /**
-     * @param int $start
-     * @param int $length
      * @return $this
      */
     public function slice(int $start, int $length)
@@ -70,6 +58,7 @@ class WitnessCollectionMutator extends AbstractCollectionMutator
         }
 
         $this->set = \SplFixedArray::fromArray(array_slice($this->set->toArray(), $start, $length), false);
+
         return $this;
     }
 
@@ -79,11 +68,11 @@ class WitnessCollectionMutator extends AbstractCollectionMutator
     public function null()
     {
         $this->slice(0, 0);
+
         return $this;
     }
 
     /**
-     * @param ScriptWitnessInterface $witness
      * @return $this
      */
     public function add(ScriptWitnessInterface $witness)
@@ -92,17 +81,17 @@ class WitnessCollectionMutator extends AbstractCollectionMutator
         $this->set->setSize($size + 1);
 
         $this->set[$size] = new InputMutator($witness);
+
         return $this;
     }
 
     /**
-     * @param int $i
-     * @param ScriptWitnessInterface $input
      * @return $this
      */
     public function set(int $i, ScriptWitnessInterface $input)
     {
         $this->set[$i] = new InputMutator($input);
+
         return $this;
     }
 }
