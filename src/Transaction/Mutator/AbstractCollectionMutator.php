@@ -11,6 +11,11 @@ abstract class AbstractCollectionMutator implements \IteratorAggregate, \ArrayAc
      */
     protected $set;
 
+    public function getIterator()
+    {
+        return $this->set;
+    }
+
     public function all(): array
     {
         return $this->set->toArray();
